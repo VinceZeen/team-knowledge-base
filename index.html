@@ -542,6 +542,12 @@ const AVC = [
 ];
 const MEMS = ['Ahmad','Priya','Wei','Sara','James','Lena','Carlos','Nadia'];
 
+let entries = [
+  {id:1,author:'Priya',cat:'Lessons learned',title:'Condense detailed sections with charts',body:'Sections 3 and 4 of the monthly report are too wordy. Replacing text blocks with visual charts improves readability and reduces reading time for stakeholders.',tags:['Monthly report','Data'],date:'2 Jun 2026',images:[]},
+  {id:2,author:'Ahmad',cat:'Process',title:'Key agenda placement in monthly reports',body:'Sections 1 and 2 are best suited as the key agenda at the top of the monthly report. This helps readers orient quickly before diving into details.',tags:['Monthly report','Workflow'],date:'3 Jun 2026',images:[]},
+  {id:3,author:'Wei',cat:'Client',title:'India monthly report distribution list',body:'For India region reports, distribute to EE O&M team members, RCC, and the project team. Confirm the mailing list each month as membership may change.',tags:['India','RCC','Communication'],date:'4 Jun 2026',images:[]},
+];
+let nid = 4, pImgs = [], lbImgs = [], lbIdx = 0;
 
 function avS(n) {
   const i = Math.max(0, MEMS.indexOf(n)) % AVC.length;
