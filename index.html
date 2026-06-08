@@ -1,0 +1,702 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Team Knowledge Base</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css" />
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg: #f7f6f3;
+    --surface: #ffffff;
+    --surface2: #f0ede8;
+    --border: rgba(0,0,0,0.10);
+    --border2: rgba(0,0,0,0.16);
+    --text: #1a1917;
+    --text2: #6b6860;
+    --text3: #9b9890;
+    --accent: #2563eb;
+    --accent-bg: #eff6ff;
+    --accent-border: #bfdbfe;
+    --success: #065f46;
+    --success-bg: #d1fae5;
+    --success-border: #6ee7b7;
+    --radius: 10px;
+    --radius-lg: 14px;
+    --shadow: 0 1px 3px rgba(0,0,0,0.08), 0 1px 2px rgba(0,0,0,0.04);
+    --shadow-md: 0 4px 12px rgba(0,0,0,0.10), 0 2px 4px rgba(0,0,0,0.06);
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #111110;
+      --surface: #1c1c1a;
+      --surface2: #252522;
+      --border: rgba(255,255,255,0.10);
+      --border2: rgba(255,255,255,0.18);
+      --text: #f0ede8;
+      --text2: #a09d98;
+      --text3: #6b6860;
+      --accent: #60a5fa;
+      --accent-bg: #1e3a5f;
+      --accent-border: #2563eb;
+      --success: #6ee7b7;
+      --success-bg: #064e3b;
+      --success-border: #065f46;
+    }
+  }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    padding: 0;
+  }
+
+  /* ── Header ── */
+  .header {
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+    padding: 0 1.5rem;
+    height: 56px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+  .header-left { display: flex; align-items: center; gap: 10px; }
+  .header-logo {
+    width: 32px; height: 32px;
+    background: var(--text);
+    border-radius: 8px;
+    display: flex; align-items: center; justify-content: center;
+    color: var(--bg);
+    font-size: 16px;
+  }
+  .header-title { font-size: 15px; font-weight: 600; color: var(--text); }
+  .header-sub { font-size: 12px; color: var(--text2); margin-top: 1px; }
+
+  /* ── Main layout ── */
+  .main { max-width: 680px; margin: 0 auto; padding: 1.5rem 1rem 4rem; }
+
+  /* ── Stats ── */
+  .stats-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 1.5rem; }
+  .stat-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 14px 16px;
+    box-shadow: var(--shadow);
+  }
+  .stat-n { font-size: 24px; font-weight: 600; color: var(--text); line-height: 1; }
+  .stat-l { font-size: 11px; color: var(--text2); margin-top: 4px; text-transform: uppercase; letter-spacing: 0.04em; }
+
+  /* ── Toolbar ── */
+  .toolbar { display: flex; gap: 8px; margin-bottom: 1rem; align-items: center; }
+  .toolbar input[type="text"] {
+    flex: 1;
+    height: 40px;
+    border: 1px solid var(--border2);
+    border-radius: var(--radius);
+    padding: 0 12px 0 36px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 14px;
+    background: var(--surface);
+    color: var(--text);
+    outline: none;
+    transition: border-color 0.15s, box-shadow 0.15s;
+  }
+  .toolbar input[type="text"]:focus { border-color: var(--accent); box-shadow: 0 0 0 3px rgba(37,99,235,0.12); }
+  .search-wrap { position: relative; flex: 1; }
+  .search-wrap .ti { position: absolute; left: 10px; top: 50%; transform: translateY(-50%); font-size: 16px; color: var(--text3); pointer-events: none; }
+  .toolbar select {
+    height: 40px;
+    border: 1px solid var(--border2);
+    border-radius: var(--radius);
+    padding: 0 10px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 13px;
+    background: var(--surface);
+    color: var(--text);
+    outline: none;
+    cursor: pointer;
+  }
+  .add-btn {
+    height: 40px;
+    padding: 0 16px;
+    background: var(--text);
+    color: var(--bg);
+    border: none;
+    border-radius: var(--radius);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 13px;
+    font-weight: 500;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    white-space: nowrap;
+    transition: opacity 0.15s;
+  }
+  .add-btn:hover { opacity: 0.82; }
+
+  /* ── Toast ── */
+  .toast {
+    display: none;
+    align-items: center;
+    gap: 8px;
+    background: var(--success-bg);
+    color: var(--success);
+    border: 1px solid var(--success-border);
+    border-radius: var(--radius);
+    padding: 10px 14px;
+    font-size: 13px;
+    margin-bottom: 1rem;
+    animation: slideIn 0.2s ease;
+  }
+  @keyframes slideIn { from { opacity:0; transform:translateY(-6px); } to { opacity:1; transform:translateY(0); } }
+
+  /* ── Modal overlay ── */
+  .overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.45);
+    z-index: 200;
+    align-items: flex-end;
+    justify-content: center;
+    padding: 0;
+  }
+  .overlay.open { display: flex; }
+  @media (min-width: 600px) {
+    .overlay { align-items: center; padding: 1rem; }
+  }
+
+  .modal {
+    background: var(--surface);
+    border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+    width: 100%;
+    max-width: 520px;
+    max-height: 92vh;
+    overflow-y: auto;
+    box-shadow: var(--shadow-md);
+    animation: sheetUp 0.25s cubic-bezier(0.34,1.2,0.64,1);
+  }
+  @media (min-width: 600px) {
+    .modal { border-radius: var(--radius-lg); animation: popIn 0.2s ease; }
+  }
+  @keyframes sheetUp { from { transform: translateY(40px); opacity:0; } to { transform:translateY(0); opacity:1; } }
+  @keyframes popIn { from { transform: scale(0.96); opacity:0; } to { transform:scale(1); opacity:1; } }
+
+  .modal-header {
+    padding: 16px 20px 0;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: sticky;
+    top: 0;
+    background: var(--surface);
+    z-index: 1;
+    padding-bottom: 12px;
+    border-bottom: 1px solid var(--border);
+  }
+  .modal-title { font-size: 15px; font-weight: 600; }
+  .modal-close {
+    width: 32px; height: 32px;
+    border: 1px solid var(--border);
+    border-radius: 50%;
+    background: transparent;
+    cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    color: var(--text2);
+    font-size: 16px;
+  }
+  .modal-close:hover { background: var(--surface2); }
+
+  /* ── Step bar ── */
+  .step-bar {
+    display: flex;
+    padding: 12px 20px 0;
+    gap: 6px;
+  }
+  .step-pip {
+    flex: 1;
+    height: 4px;
+    border-radius: 2px;
+    background: var(--border);
+    transition: background 0.2s;
+  }
+  .step-pip.done, .step-pip.active { background: var(--accent); }
+
+  .step-label {
+    display: flex;
+    gap: 0;
+    padding: 6px 20px 12px;
+  }
+  .slabel {
+    flex: 1;
+    font-size: 11px;
+    color: var(--text3);
+    text-align: center;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+  }
+  .slabel.active { color: var(--accent); font-weight: 600; }
+  .slabel.done { color: var(--text2); }
+
+  /* ── Form ── */
+  .step-body { padding: 16px 20px 20px; }
+  .field { display: flex; flex-direction: column; gap: 5px; margin-bottom: 14px; }
+  .field label { font-size: 12px; font-weight: 500; color: var(--text2); text-transform: uppercase; letter-spacing: 0.04em; }
+  .field input, .field select, .field textarea {
+    width: 100%;
+    height: 42px;
+    border: 1px solid var(--border2);
+    border-radius: var(--radius);
+    padding: 0 12px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 14px;
+    background: var(--surface);
+    color: var(--text);
+    outline: none;
+    transition: border-color 0.15s, box-shadow 0.15s;
+  }
+  .field textarea { height: auto; min-height: 100px; padding: 10px 12px; resize: vertical; }
+  .field input:focus, .field select:focus, .field textarea:focus { border-color: var(--accent); box-shadow: 0 0 0 3px rgba(37,99,235,0.12); }
+  .field-err { font-size: 12px; color: #dc2626; display: none; }
+
+  /* Tags */
+  .tag-wrap { display: flex; flex-wrap: wrap; gap: 7px; }
+  .tag {
+    font-size: 12px;
+    padding: 6px 12px;
+    border-radius: 99px;
+    border: 1px solid var(--border2);
+    cursor: pointer;
+    color: var(--text2);
+    background: var(--surface);
+    transition: all 0.15s;
+    -webkit-tap-highlight-color: transparent;
+    user-select: none;
+  }
+  .tag:hover { border-color: var(--accent); color: var(--accent); }
+  .tag.on { background: var(--accent-bg); color: var(--accent); border-color: var(--accent-border); font-weight: 500; }
+
+  /* Upload */
+  .upload-zone {
+    border: 1.5px dashed var(--border2);
+    border-radius: var(--radius);
+    padding: 24px 16px;
+    text-align: center;
+    cursor: pointer;
+    background: var(--surface2);
+    position: relative;
+    transition: border-color 0.15s, background 0.15s;
+  }
+  .upload-zone:hover { border-color: var(--accent); background: var(--accent-bg); }
+  .upload-zone input { position: absolute; inset: 0; opacity: 0; cursor: pointer; width: 100%; height: 100%; }
+  .upload-zone i { font-size: 28px; color: var(--text3); display: block; margin: 0 auto 8px; }
+  .upload-zone p { font-size: 13px; color: var(--text2); pointer-events: none; }
+  .upload-zone .sub { font-size: 11px; margin-top: 3px; color: var(--text3); }
+  .prev-strip { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 12px; }
+  .prev-wrap { position: relative; width: 72px; height: 72px; border-radius: var(--radius); overflow: hidden; border: 1px solid var(--border); flex-shrink: 0; }
+  .prev-wrap img { width: 100%; height: 100%; object-fit: cover; display: block; }
+  .prev-rm { position: absolute; top: 3px; right: 3px; background: rgba(0,0,0,0.6); color: #fff; border: none; border-radius: 50%; width: 20px; height: 20px; font-size: 11px; cursor: pointer; display: flex; align-items: center; justify-content: center; padding: 0; }
+
+  /* Step nav */
+  .snav { display: flex; gap: 8px; margin-top: 16px; }
+  .snav button { flex: 1; height: 44px; border-radius: var(--radius); font-family: 'DM Sans', sans-serif; font-size: 14px; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 6px; transition: all 0.15s; }
+  .snav .back-btn { background: transparent; border: 1px solid var(--border2); color: var(--text2); }
+  .snav .back-btn:hover { background: var(--surface2); }
+  .snav .next-btn { background: var(--text); border: none; color: var(--bg); font-weight: 500; }
+  .snav .next-btn:hover { opacity: 0.82; }
+
+  /* ── Feed ── */
+  .feed-meta { font-size: 12px; color: var(--text3); margin-bottom: 10px; }
+  .ecard {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    padding: 16px;
+    margin-bottom: 10px;
+    box-shadow: var(--shadow);
+    transition: box-shadow 0.15s;
+  }
+  .ecard:hover { box-shadow: var(--shadow-md); }
+  .etop { display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 10px; gap: 8px; }
+  .emeta { display: flex; align-items: center; gap: 10px; min-width: 0; }
+  .av { width: 34px; height: 34px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 600; flex-shrink: 0; }
+  .ename { font-size: 13px; font-weight: 600; color: var(--text); }
+  .edate { font-size: 11px; color: var(--text3); margin-top: 1px; }
+  .cpill { font-size: 11px; padding: 4px 9px; border-radius: 6px; font-weight: 500; flex-shrink: 0; white-space: nowrap; }
+  .etitle { font-size: 15px; font-weight: 600; color: var(--text); margin-bottom: 5px; line-height: 1.4; }
+  .ebody { font-size: 13px; color: var(--text2); line-height: 1.65; margin-bottom: 10px; }
+  .eimgs { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 10px; }
+  .eimg { width: 74px; height: 74px; border-radius: var(--radius); object-fit: cover; border: 1px solid var(--border); cursor: zoom-in; transition: opacity 0.15s, transform 0.15s; }
+  .eimg:hover { opacity: 0.85; transform: scale(1.03); }
+  .etags { display: flex; flex-wrap: wrap; gap: 5px; }
+  .etag { font-size: 11px; padding: 3px 9px; border-radius: 99px; background: var(--surface2); color: var(--text3); border: 1px solid var(--border); }
+  .empty { text-align: center; padding: 3rem 1rem; color: var(--text3); font-size: 14px; }
+  .empty i { font-size: 36px; display: block; margin: 0 auto 12px; color: var(--text3); }
+
+  /* ── Lightbox ── */
+  .lb-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.90);
+    z-index: 300;
+    align-items: center;
+    justify-content: center;
+    padding: 1rem;
+  }
+  .lb-overlay.open { display: flex; }
+  .lb-inner { position: relative; max-width: 90vw; max-height: 88vh; display: flex; align-items: center; justify-content: center; }
+  .lb-inner img { max-width: 88vw; max-height: 84vh; border-radius: var(--radius); object-fit: contain; box-shadow: 0 8px 40px rgba(0,0,0,0.5); display: block; }
+  .lb-close { position: absolute; top: -14px; right: -14px; background: var(--surface); border: 1px solid var(--border); border-radius: 50%; width: 34px; height: 34px; font-size: 16px; cursor: pointer; display: flex; align-items: center; justify-content: center; color: var(--text); z-index: 1; }
+  .lb-nav { position: absolute; top: 50%; transform: translateY(-50%); background: rgba(255,255,255,0.15); border: none; border-radius: 50%; width: 38px; height: 38px; color: #fff; font-size: 20px; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: background 0.15s; }
+  .lb-nav:hover { background: rgba(255,255,255,0.28); }
+  .lb-nav.lp { left: -50px; }
+  .lb-nav.ln { right: -50px; }
+  .lb-ctr { position: absolute; bottom: -28px; left: 50%; transform: translateX(-50%); font-size: 12px; color: rgba(255,255,255,0.6); white-space: nowrap; }
+
+  @media (max-width: 480px) {
+    .stats-row { gap: 8px; }
+    .stat-n { font-size: 20px; }
+    .toolbar { flex-wrap: wrap; }
+    .toolbar select { flex: 1; }
+    .add-btn { width: 100%; justify-content: center; }
+    .lb-nav.lp { left: -4px; }
+    .lb-nav.ln { right: -4px; }
+  }
+</style>
+</head>
+<body>
+
+<header class="header">
+  <div class="header-left">
+    <div class="header-logo"><i class="ti ti-brain" aria-hidden="true"></i></div>
+    <div>
+      <div class="header-title">Knowledge Base</div>
+      <div class="header-sub">Share what you learn</div>
+    </div>
+  </div>
+  <button class="add-btn" onclick="openModal()"><i class="ti ti-plus" aria-hidden="true"></i> Add entry</button>
+</header>
+
+<main class="main">
+
+  <div class="stats-row">
+    <div class="stat-card"><div class="stat-n" id="stat-total">3</div><div class="stat-l">Entries</div></div>
+    <div class="stat-card"><div class="stat-n" id="stat-members">3</div><div class="stat-l">Contributors</div></div>
+    <div class="stat-card"><div class="stat-n" id="stat-week">1</div><div class="stat-l">This week</div></div>
+  </div>
+
+  <div class="toolbar">
+    <div class="search-wrap">
+      <i class="ti ti-search" aria-hidden="true"></i>
+      <input type="text" id="search-box" placeholder="Search entries…" oninput="renderFeed()" />
+    </div>
+    <select id="filter-cat" onchange="renderFeed()">
+      <option value="">All categories</option>
+      <option>Process</option><option>Technical</option><option>Client</option>
+      <option>Tools</option><option>Lessons learned</option><option>Best practice</option>
+    </select>
+  </div>
+
+  <div class="toast" id="toast"><i class="ti ti-circle-check" aria-hidden="true"></i> Entry added successfully!</div>
+
+  <div class="feed-meta" id="feed-meta"></div>
+  <div id="feed"></div>
+</main>
+
+<!-- Add Entry Modal -->
+<div class="overlay" id="overlay" onclick="overlayClick(event)">
+  <div class="modal" id="modal">
+    <div class="modal-header">
+      <span class="modal-title" id="modal-title">New entry — Step 1 of 4</span>
+      <button class="modal-close" onclick="closeModal()" aria-label="Close"><i class="ti ti-x"></i></button>
+    </div>
+    <div class="step-bar">
+      <div class="step-pip active" id="p0"></div>
+      <div class="step-pip" id="p1"></div>
+      <div class="step-pip" id="p2"></div>
+      <div class="step-pip" id="p3"></div>
+    </div>
+    <div class="step-label">
+      <span class="slabel active" id="sl0">Who</span>
+      <span class="slabel" id="sl1">What</span>
+      <span class="slabel" id="sl2">Images</span>
+      <span class="slabel" id="sl3">Tags</span>
+    </div>
+    <div class="step-body">
+
+      <div id="s0">
+        <div class="field">
+          <label>Your name</label>
+          <select id="kb-author">
+            <option value="">Choose your name…</option>
+            <option>Ahmad</option><option>Priya</option><option>Wei</option><option>Sara</option>
+            <option>James</option><option>Lena</option><option>Carlos</option><option>Nadia</option>
+          </select>
+          <span class="field-err" id="e-author">Please select your name</span>
+        </div>
+        <div class="field">
+          <label>Category</label>
+          <select id="kb-cat">
+            <option value="">Choose a category…</option>
+            <option>Process</option><option>Technical</option><option>Client</option>
+            <option>Tools</option><option>Lessons learned</option><option>Best practice</option>
+          </select>
+          <span class="field-err" id="e-cat">Please choose a category</span>
+        </div>
+        <div class="snav"><button class="next-btn" onclick="goStep(1)">Next <i class="ti ti-arrow-right"></i></button></div>
+      </div>
+
+      <div id="s1" style="display:none">
+        <div class="field">
+          <label>Title</label>
+          <input type="text" id="kb-title" placeholder="What did you learn?" />
+          <span class="field-err" id="e-title">Please add a title</span>
+        </div>
+        <div class="field">
+          <label>Details</label>
+          <textarea id="kb-body" placeholder="Describe what you learned, why it matters, and how the team can apply it…"></textarea>
+          <span class="field-err" id="e-body">Please add some details</span>
+        </div>
+        <div class="snav">
+          <button class="back-btn" onclick="goStep(0)"><i class="ti ti-arrow-left"></i> Back</button>
+          <button class="next-btn" onclick="goStep(2)">Next <i class="ti ti-arrow-right"></i></button>
+        </div>
+      </div>
+
+      <div id="s2" style="display:none">
+        <p style="font-size:13px;color:var(--text2);margin-bottom:12px">Attach screenshots or reference photos — optional.</p>
+        <div class="upload-zone">
+          <input type="file" id="kb-imgs" accept="image/*" multiple onchange="handleImgs(event)" />
+          <i class="ti ti-photo-up" aria-hidden="true"></i>
+          <p>Click or tap to upload images</p>
+          <p class="sub">PNG, JPG, GIF — multiple allowed</p>
+        </div>
+        <div class="prev-strip" id="prev-strip"></div>
+        <div class="snav" style="margin-top:16px">
+          <button class="back-btn" onclick="goStep(1)"><i class="ti ti-arrow-left"></i> Back</button>
+          <button class="next-btn" onclick="goStep(3)">Next <i class="ti ti-arrow-right"></i></button>
+        </div>
+      </div>
+
+      <div id="s3" style="display:none">
+        <p style="font-size:13px;color:var(--text2);margin-bottom:12px">Tag your entry so teammates can find it easily.</p>
+        <div class="tag-wrap" id="tag-group">
+          <span class="tag" onclick="toggleTag(this)">India</span>
+          <span class="tag" onclick="toggleTag(this)">O&M</span>
+          <span class="tag" onclick="toggleTag(this)">Monthly report</span>
+          <span class="tag" onclick="toggleTag(this)">RCC</span>
+          <span class="tag" onclick="toggleTag(this)">Project team</span>
+          <span class="tag" onclick="toggleTag(this)">Communication</span>
+          <span class="tag" onclick="toggleTag(this)">Data</span>
+          <span class="tag" onclick="toggleTag(this)">Workflow</span>
+        </div>
+        <div class="snav" style="margin-top:18px">
+          <button class="back-btn" onclick="goStep(2)"><i class="ti ti-arrow-left"></i> Back</button>
+          <button class="next-btn" onclick="submitEntry()"><i class="ti ti-check"></i> Submit entry</button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- Lightbox -->
+<div class="lb-overlay" id="lb" onclick="lbBgClick(event)">
+  <div class="lb-inner">
+    <button class="lb-close" onclick="closeLb()" aria-label="Close lightbox"><i class="ti ti-x"></i></button>
+    <button class="lb-nav lp" id="lb-prev" onclick="lbNav(-1)" aria-label="Previous image"><i class="ti ti-chevron-left"></i></button>
+    <img id="lb-img" src="" alt="Enlarged image" />
+    <button class="lb-nav ln" id="lb-next" onclick="lbNav(1)" aria-label="Next image"><i class="ti ti-chevron-right"></i></button>
+    <span class="lb-ctr" id="lb-ctr"></span>
+  </div>
+</div>
+
+<script>
+const CAT_C = {
+  'Process':         ['#eff6ff','#1d4ed8','#bfdbfe'],
+  'Technical':       ['#f3e8ff','#6b21a8','#d8b4fe'],
+  'Client':          ['#fff7ed','#9a3412','#fed7aa'],
+  'Tools':           ['#f0fdf4','#166534','#bbf7d0'],
+  'Lessons learned': ['#fff1f2','#9f1239','#fecdd3'],
+  'Best practice':   ['#ecfdf5','#065f46','#a7f3d0'],
+};
+const AVC = [
+  ['#dbeafe','#1e40af'],['#ede9fe','#5b21b6'],['#d1fae5','#065f46'],
+  ['#ffedd5','#9a3412'],['#fce7f3','#9d174d'],['#dcfce7','#166534'],
+  ['#fef9c3','#854d0e'],['#f1f5f9','#475569']
+];
+const MEMS = ['Ahmad','Priya','Wei','Sara','James','Lena','Carlos','Nadia'];
+
+let entries = [
+  {id:1,author:'Priya',cat:'Lessons learned',title:'Condense detailed sections with charts',body:'Sections 3 and 4 of the monthly report are too wordy. Replacing text blocks with visual charts improves readability and reduces reading time for stakeholders.',tags:['Monthly report','Data'],date:'2 Jun 2026',images:[]},
+  {id:2,author:'Ahmad',cat:'Process',title:'Key agenda placement in monthly reports',body:'Sections 1 and 2 are best suited as the key agenda at the top of the monthly report. This helps readers orient quickly before diving into details.',tags:['Monthly report','Workflow'],date:'3 Jun 2026',images:[]},
+  {id:3,author:'Wei',cat:'Client',title:'India monthly report distribution list',body:'For India region reports, distribute to EE O&M team members, RCC, and the project team. Confirm the mailing list each month as membership may change.',tags:['India','RCC','Communication'],date:'4 Jun 2026',images:[]},
+];
+let nid = 4, pImgs = [], lbImgs = [], lbIdx = 0;
+
+function avS(n) {
+  const i = Math.max(0, MEMS.indexOf(n)) % AVC.length;
+  return `background:${AVC[i][0]};color:${AVC[i][1]};`;
+}
+
+// Modal
+function openModal() { document.getElementById('overlay').classList.add('open'); goStep(0); }
+function closeModal() { document.getElementById('overlay').classList.remove('open'); }
+function overlayClick(e) { if (e.target === document.getElementById('overlay')) closeModal(); }
+
+// Steps
+function goStep(n) {
+  if (n === 1) {
+    const a = document.getElementById('kb-author').value;
+    const c = document.getElementById('kb-cat').value;
+    let ok = true;
+    document.getElementById('e-author').style.display = a ? 'none' : 'block'; if (!a) ok = false;
+    document.getElementById('e-cat').style.display = c ? 'none' : 'block'; if (!c) ok = false;
+    if (!ok) return;
+  }
+  if (n === 2) {
+    const t = document.getElementById('kb-title').value.trim();
+    const b = document.getElementById('kb-body').value.trim();
+    let ok = true;
+    document.getElementById('e-title').style.display = t ? 'none' : 'block'; if (!t) ok = false;
+    document.getElementById('e-body').style.display = b ? 'none' : 'block'; if (!b) ok = false;
+    if (!ok) return;
+  }
+  const labels = ['Who','What','Images','Tags'];
+  for (let i = 0; i < 4; i++) {
+    document.getElementById('s' + i).style.display = i === n ? 'block' : 'none';
+    const pip = document.getElementById('p' + i);
+    pip.className = 'step-pip' + (i <= n ? ' active' : '');
+    const sl = document.getElementById('sl' + i);
+    sl.className = 'slabel' + (i === n ? ' active' : i < n ? ' done' : '');
+  }
+  document.getElementById('modal-title').textContent = `New entry — Step ${n + 1} of 4`;
+}
+
+function toggleTag(el) { el.classList.toggle('on'); }
+
+function handleImgs(e) {
+  [...e.target.files].forEach(f => {
+    const r = new FileReader();
+    r.onload = ev => { pImgs.push(ev.target.result); renderPrevs(); };
+    r.readAsDataURL(f);
+  });
+  e.target.value = '';
+}
+
+function renderPrevs() {
+  document.getElementById('prev-strip').innerHTML = pImgs.map((s, i) =>
+    `<div class="prev-wrap"><img src="${s}" alt="preview" /><button class="prev-rm" onclick="rmPrev(${i})" aria-label="Remove"><i class="ti ti-x"></i></button></div>`
+  ).join('');
+}
+
+function rmPrev(i) { pImgs.splice(i, 1); renderPrevs(); }
+
+function submitEntry() {
+  const author = document.getElementById('kb-author').value;
+  const cat    = document.getElementById('kb-cat').value;
+  const title  = document.getElementById('kb-title').value.trim();
+  const body   = document.getElementById('kb-body').value.trim();
+  const tags   = [...document.querySelectorAll('#tag-group .tag.on')].map(t => t.textContent.trim());
+  const date   = new Date().toLocaleDateString('en-GB', {day:'numeric',month:'short',year:'numeric'});
+  entries.unshift({ id: nid++, author, cat, title, body, tags, date, images: [...pImgs] });
+  document.getElementById('kb-author').value = '';
+  document.getElementById('kb-cat').value = '';
+  document.getElementById('kb-title').value = '';
+  document.getElementById('kb-body').value = '';
+  document.querySelectorAll('#tag-group .tag.on').forEach(t => t.classList.remove('on'));
+  pImgs = []; renderPrevs();
+  closeModal();
+  const toast = document.getElementById('toast');
+  toast.style.display = 'flex';
+  setTimeout(() => { toast.style.display = 'none'; }, 3000);
+  updateStats(); renderFeed();
+}
+
+function updateStats() {
+  document.getElementById('stat-total').textContent = entries.length;
+  document.getElementById('stat-members').textContent = new Set(entries.map(e => e.author)).size;
+  const wk = entries.filter(e => {
+    try { const p = e.date.split(' '); return (Date.now() - new Date(`${p[1]} ${p[0]}, ${p[2]}`).getTime()) < 7 * 86400000; } catch { return false; }
+  }).length;
+  document.getElementById('stat-week').textContent = wk;
+}
+
+// Lightbox
+function openLb(id, i) {
+  const e = entries.find(x => x.id === id);
+  if (!e || !e.images) return;
+  lbImgs = e.images; lbIdx = i; updLb();
+  document.getElementById('lb').classList.add('open');
+}
+function closeLb() { document.getElementById('lb').classList.remove('open'); }
+function lbBgClick(e) { if (e.target === document.getElementById('lb')) closeLb(); }
+function lbNav(d) { lbIdx = Math.max(0, Math.min(lbImgs.length - 1, lbIdx + d)); updLb(); }
+function updLb() {
+  document.getElementById('lb-img').src = lbImgs[lbIdx];
+  const m = lbImgs.length > 1;
+  document.getElementById('lb-ctr').textContent = m ? (lbIdx + 1) + ' / ' + lbImgs.length : '';
+  document.getElementById('lb-prev').style.display = m && lbIdx > 0 ? 'flex' : 'none';
+  document.getElementById('lb-next').style.display = m && lbIdx < lbImgs.length - 1 ? 'flex' : 'none';
+}
+
+function renderFeed() {
+  const q   = (document.getElementById('search-box').value || '').toLowerCase();
+  const cat = document.getElementById('filter-cat').value;
+  const list = entries.filter(e => {
+    const mq = !q || [e.title, e.body, e.author, ...e.tags].some(x => x.toLowerCase().includes(q));
+    return mq && (!cat || e.cat === cat);
+  });
+  document.getElementById('feed-meta').textContent = list.length + ' entr' + (list.length === 1 ? 'y' : 'ies');
+  const feed = document.getElementById('feed');
+  if (!list.length) {
+    feed.innerHTML = '<div class="empty"><i class="ti ti-mood-empty" aria-hidden="true"></i>No entries found</div>';
+    return;
+  }
+  feed.innerHTML = list.map(e => {
+    const cc = CAT_C[e.cat] || ['#f1f5f9','#475569','#e2e8f0'];
+    const imgs = e.images && e.images.length
+      ? `<div class="eimgs">${e.images.map((s,i) => `<img class="eimg" src="${s}" alt="entry image" onclick="openLb(${e.id},${i})" />`).join('')}</div>` : '';
+    const tags = e.tags.length
+      ? `<div class="etags">${e.tags.map(t => `<span class="etag">${t}</span>`).join('')}</div>` : '';
+    return `<div class="ecard">
+      <div class="etop">
+        <div class="emeta">
+          <div class="av" style="${avS(e.author)}">${e.author.slice(0,2).toUpperCase()}</div>
+          <div><div class="ename">${e.author}</div><div class="edate">${e.date}</div></div>
+        </div>
+        <span class="cpill" style="background:${cc[0]};color:${cc[1]};border:1px solid ${cc[2]}">${e.cat}</span>
+      </div>
+      <div class="etitle">${e.title}</div>
+      <div class="ebody">${e.body}</div>
+      ${imgs}${tags}
+    </div>`;
+  }).join('');
+}
+
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape') { closeLb(); closeModal(); }
+  if (!document.getElementById('lb').classList.contains('open')) return;
+  if (e.key === 'ArrowLeft') lbNav(-1);
+  if (e.key === 'ArrowRight') lbNav(1);
+});
+
+updateStats(); renderFeed();
+</script>
+</body>
+</html>
